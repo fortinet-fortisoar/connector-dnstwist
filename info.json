@@ -1,0 +1,43 @@
+{
+  "name": "dnstwist",
+  "version": "1.0.0",
+  "label": "dnstwist",
+  "description": "Domain name permutation engine for detecting homograph phishing attacks,\ntyposquatting, fraud and brand impersonation.",
+  "publisher": "Fortinet",
+  "icon_small_name": "dnstwist_small.png",
+  "icon_large_name": "dnstwist_large.png",
+  "cs_approved": false,
+  "cs_compatible": true,
+  "category": "investigation",
+  "help_online": "https://github.com/elceef/dnstwist",
+  "configuration": {
+    "fields": [
+
+    ]
+  },
+  "operations": [
+    {
+      "operation": "search",
+      "title": "Search Registered Domains",
+      "description": "Show only registered domain names",
+      "category": "investigation",
+      "annotation": "search",
+      "parameters": [
+        {
+          "title": "Domain",
+          "required": true,
+          "editable": true,
+          "visible": true,
+          "type": "text",
+          "name": "domain",
+          "description": "Domain"
+        }
+      ],
+      "enabled": true,
+      "output_schema": {}
+    }
+  ],
+  "playbooks": [
+    {}
+  ]
+}
