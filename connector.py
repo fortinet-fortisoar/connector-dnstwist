@@ -2,10 +2,8 @@ from connectors.core.connector import Connector, ConnectorError, get_logger
 
 from .operations import *
 from .operations import _check_health
-##sudo -u nginx /opt/cyops-integrations/.env/bin/pip install -r /opt/cyops-integrations/integrations/connectors/usom_1_0_0/requirements.txt
 
 logger = get_logger('screenshot')
-
 
 class DnsTwist(Connector):
     def execute(self, config, operation_name, params, **kwargs):

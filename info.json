@@ -2,7 +2,7 @@
   "name": "dnstwist",
   "version": "1.0.0",
   "label": "dnstwist",
-  "description": "Domain name permutation engine for detecting homograph phishing attacks,\ntyposquatting, fraud and brand impersonation.",
+  "description": "Domain name permutation engine for detecting homograph phishing attacks,typosquatting, fraud and brand impersonation.",
   "publisher": "Fortinet",
   "icon_small_name": "dnstwist_small.png",
   "icon_large_name": "dnstwist_large.png",
