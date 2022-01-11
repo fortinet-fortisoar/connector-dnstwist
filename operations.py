@@ -16,7 +16,9 @@ logger = get_logger('dnstwist')
 
 
 def search(config, params):
-    fuzz = dnstwist.Fuzzer(params.get("domain").strip())
+    # fuzz = dnstwist.Fuzzer(params.get("domain").strip())
+    # TODO use at version 20211204
+    fuzz = dnstwist.DomainFuzz(params.get("domain").strip())
     fuzz.generate()
 
     jobs = queue.Queue()
@@ -25,7 +27,9 @@ def search(config, params):
 
     threads = []
     for _ in range(10):
-        worker = dnstwist.Scanner(jobs)
+        # worker = dnstwist.Scanner(jobs)
+        # TODO use at version 20211204
+        worker = dnstwist.DomainThread(jobs)
         worker.setDaemon(True)
         worker.debug = True
         worker.start()
