@@ -11,9 +11,6 @@
   "category": "investigation",
   "help_online": "https://github.com/elceef/dnstwist",
   "configuration": {
-    "fields": [
-
-    ]
   },
   "operations": [
     {
@@ -34,7 +31,18 @@
         }
       ],
       "enabled": true,
-      "output_schema": {}
+      "output_schema": [
+        {
+          "dns-a": [
+            ""
+          ],
+          "dns-aaaa": [
+            ""
+          ],
+          "domain-name": "",
+          "fuzzer": ""
+        }
+      ]
     }
   ],
   "playbooks": [
