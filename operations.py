@@ -1,10 +1,10 @@
 import logging
 import json
+import time
 
 try:
     import dnstwist
     import queue
-    import time
 
     MODULE_DNSTWIST = True
 except ImportError:
@@ -13,6 +13,8 @@ except ImportError:
 from connectors.core.connector import Connector, get_logger, ConnectorError
 
 logger = get_logger('dnstwist')
+
+THREAD_COUNT = 10
 
 
 def search(config, params):
@@ -26,7 +28,7 @@ def search(config, params):
         jobs.put(j)
 
     threads = []
-    for _ in range(10):
+    for _ in range(THREAD_COUNT):
         # worker = dnstwist.Scanner(jobs)
         # TODO use at version 20211204
         worker = dnstwist.DomainThread(jobs)
@@ -43,8 +45,10 @@ def search(config, params):
         worker.join()
 
     domains = fuzz.permutations(registered=True)
+    domains = dnstwist.create_json(domains)
+    domains = json.loads(domains)
 
-    return dnstwist.create_json(domains)
+    return domains
 
 
 def _check_health(config):
