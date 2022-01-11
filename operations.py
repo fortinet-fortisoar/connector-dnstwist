@@ -1,36 +1,48 @@
 import logging
 import json
-import subprocess
-import os
+
+try:
+    import dnstwist
+    import queue
+    import time
+
+    MODULE_DNSTWIST = True
+except ImportError:
+    MODULE_DNSTWIST = False
 
 from connectors.core.connector import Connector, get_logger, ConnectorError
 
 logger = get_logger('dnstwist')
-DNS_TWIST = "/opt/cyops-integrations/.env/bin/dnstwist"
 
 
 def search(config, params):
-    domain = params.get("domain").strip()
-    cli_params = [DNS_TWIST,
-                  "--registered",
-                  "-f",
-                  "json",
-                  f"{domain}"]
-    try:
+    fuzz = dnstwist.Fuzzer(params.get("domain").strip())
+    fuzz.generate()
 
-        result = subprocess.run(cli_params, stdout=subprocess.PIPE)
-        result = result.stdout.decode('utf-8')
-        result = json.loads(result)
+    jobs = queue.Queue()
+    for j in fuzz.domains:
+        jobs.put(j)
 
-    except Exception as e:
-        logger.exception("An exception occurred {0}".format(e))
-        raise ConnectorError("{0}".format(e))
-    # finally:
-    # if os.path.exists(tmp_path): os.remove(tmp_path)
-    return result
+    threads = []
+    for _ in range(10):
+        worker = dnstwist.Scanner(jobs)
+        worker.setDaemon(True)
+        worker.debug = True
+        worker.start()
+        threads.append(worker)
+
+    while not jobs.empty():
+        time.sleep(1)
+
+    for worker in threads:
+        worker.stop()
+        worker.join()
+
+    domains = fuzz.permutations(registered=True)
+
+    return dnstwist.create_json(domains)
 
 
 def _check_health(config):
-    binary = DNS_TWIST
-    if not os.path.exists(binary):
-        raise Exception("Unable to find dnstwist in path {0}".format(binary))
+    if not MODULE_DNSTWIST:
+        raise Exception("Unable to find dnstwist library")
