@@ -18,6 +18,9 @@ class DnsTwist(Connector):
             logger.exception("An exception occurred {0}".format(e))
             raise ConnectorError("{0}".format(e))
 
+
+
+
     def check_health(self, config):
         try:
             return _check_health(config)
