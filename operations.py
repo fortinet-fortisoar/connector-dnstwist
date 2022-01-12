@@ -14,43 +14,47 @@ from connectors.core.connector import Connector, get_logger, ConnectorError
 
 logger = get_logger('dnstwist')
 
-THREAD_COUNT = 10
+THREAD_COUNT = 4
 
 
 def search(config, params):
-    # fuzz = dnstwist.Fuzzer(params.get("domain").strip())
-    # TODO use at version 20211204
-    fuzz = dnstwist.DomainFuzz(params.get("domain").strip())
-    fuzz.generate()
-
-    jobs = queue.Queue()
-    for j in fuzz.domains:
-        jobs.put(j)
-
-    threads = []
-    for _ in range(THREAD_COUNT):
-        # worker = dnstwist.Scanner(jobs)
+    try:
+        # fuzz = dnstwist.Fuzzer(params.get("domain").strip())
         # TODO use at version 20211204
-        worker = dnstwist.DomainThread(jobs)
-        worker.setDaemon(True)
-        worker.debug = True
-        worker.start()
-        threads.append(worker)
+        fuzz = dnstwist.DomainFuzz(params.get("domain").strip())
+        fuzz.generate()
 
-    while not jobs.empty():
-        time.sleep(1)
+        jobs = queue.Queue()
+        for j in fuzz.domains:
+            jobs.put(j)
 
-    for worker in threads:
-        worker.stop()
-        worker.join()
+        threads = []
+        for _ in range(THREAD_COUNT):
+            # worker = dnstwist.Scanner(jobs)
+            # TODO use at version 20211204
+            worker = dnstwist.DomainThread(jobs)
+            worker.setDaemon(True)
+            worker.debug = True
+            worker.start()
+            threads.append(worker)
 
-    domains = fuzz.permutations(registered=True)
-    domains = dnstwist.create_json(domains)
-    domains = json.loads(domains)
+        while not jobs.empty():
+            time.sleep(1)
+
+        for worker in threads:
+            worker.stop()
+            worker.join()
+
+        domains = fuzz.permutations(registered=True)
+        domains = dnstwist.create_json(domains)
+        domains = json.loads(domains)
+    except Exception as e:
+        logger.exception("An exception occurred {0}".format(e))
+        raise ConnectorError("{0}".format(e))
 
     return domains
 
 
 def _check_health(config):
     if not MODULE_DNSTWIST:
-        raise Exception("Unable to find dnstwist library")
+        raise ConnectorError("Unable to find dnstwist library")
