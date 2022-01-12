@@ -27,7 +27,11 @@
           "visible": true,
           "type": "text",
           "name": "domain",
-          "description": "Domain"
+          "description": "Domain",
+           "validation":{
+            "pattern":"^\\w+(\\.\\w+)+",
+            "patternError":"Enter a valid domain name"
+          }
         }
       ],
       "enabled": true,
