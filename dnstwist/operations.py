@@ -1,6 +1,8 @@
 import logging
 import json
 import time
+from concurrent.futures import ThreadPoolExecutor
+from connectors.core.connector import Connector, get_logger, ConnectorError
 
 try:
     import dnstwist
@@ -9,8 +11,6 @@ try:
     MODULE_DNSTWIST = True
 except ImportError:
     MODULE_DNSTWIST = False
-
-from connectors.core.connector import Connector, get_logger, ConnectorError
 
 logger = get_logger('dnstwist')
 
@@ -23,31 +23,19 @@ def search(config, params):
         # TODO use at version 20211204
         fuzz = dnstwist.DomainFuzz(params.get("domain").strip())
         fuzz.generate()
-
         jobs = queue.Queue()
-        for j in fuzz.domains:
-            jobs.put(j)
 
-        threads = []
-        for _ in range(THREAD_COUNT):
-            # worker = dnstwist.Scanner(jobs)
-            # TODO use at version 20211204
-            worker = dnstwist.DomainThread(jobs)
-            worker.setDaemon(True)
-            worker.debug = True
-            worker.start()
-            threads.append(worker)
-
-        while not jobs.empty():
-            time.sleep(1)
-
-        for worker in threads:
-            worker.stop()
-            worker.join()
+        with ThreadPoolExecutor(max_workers=THREAD_COUNT) as executor:
+            for domain in fuzz.domains:
+                jobs.put(domain)
+                worker = dnstwist.DomainThread(jobs)
+                worker.debug = True
+                executor.submit(worker.run)
 
         domains = fuzz.permutations(registered=True)
         domains = dnstwist.create_json(domains)
         domains = json.loads(domains)
+
     except Exception as e:
         logger.exception("An exception occurred {0}".format(e))
         raise ConnectorError("{0}".format(e))
