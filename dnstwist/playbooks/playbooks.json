@@ -1,0 +1,126 @@
+{
+  "type": "workflow_collections",
+  "data": [
+    {
+      "@context": "/api/3/contexts/WorkflowCollection",
+      "@type": "WorkflowCollection",
+      "name": "Sample - DNSTwist - 1.0.0",
+      "description": "Sample playbooks for \"DNSTwist\" connector. If you are planning to use any of the sample playbooks in your environment, ensure that you clone those playbooks and move them to a different collection, since the sample playbook collection gets deleted during connector upgrade and delete.",
+      "visible": true,
+      "image": "/api/3/images/5eb08417-515c-466a-8d7d-19cb08ca2cea",
+      "id": 1352,
+      "createDate": 1651062387,
+      "modifyDate": 1651062387,
+      "recordTags": [],
+      "workflows": [
+        {
+          "@type": "Workflow",
+          "triggerLimit": null,
+          "name": "Search Registered Domains",
+          "aliasName": null,
+          "tag": "#DNSTwist",
+          "description": "Show only registered domain names",
+          "isActive": false,
+          "debug": false,
+          "singleRecordExecution": false,
+          "remoteExecutableFlag": false,
+          "parameters": [],
+          "synchronous": false,
+          "lastModifyDate": 1651063614,
+          "collection": "/api/3/workflow_collections/2e8e897e-1a5c-4c1c-b1aa-36e046d00403",
+          "versions": [],
+          "triggerStep": "/api/3/workflow_steps/1d26fc5f-f05e-4e59-a842-028440161dcb",
+          "steps": [
+            {
+              "@type": "WorkflowStep",
+              "name": "Search Registered Domains",
+              "description": null,
+              "arguments": {
+                "name": "DNSTwist",
+                "config": "''",
+                "params": {
+                  "domain": "google.com"
+                },
+                "version": "1.0.0",
+                "connector": "dnstwist",
+                "operation": "search",
+                "operationTitle": "Search Registered Domains",
+                "step_variables": {
+                  "output_data": "{{vars.result}}"
+                }
+              },
+              "status": null,
+              "top": "120",
+              "left": "188",
+              "stepType": "/api/3/workflow_step_types/0bfed618-0316-11e7-93ae-92361f002671",
+              "uuid": "0ee68aad-fbd2-4e9b-bfb8-3dc1b5f9bf58",
+              "id": 60742
+            },
+            {
+              "@type": "WorkflowStep",
+              "name": "Start",
+              "description": null,
+              "arguments": {
+                "route": "704813c1-17d5-4dc1-81a9-af906804ffe7",
+                "title": "DNSTwist: Search Registered Domains",
+                "resources": [
+                  "alerts"
+                ],
+                "inputVariables": [],
+                "step_variables": {
+                  "input": {
+                    "params": [],
+                    "records": "{{vars.input.records}}"
+                  }
+                },
+                "displayConditions": {
+                  "alerts": {
+                    "sort": [],
+                    "limit": 30,
+                    "logic": "AND",
+                    "filters": []
+                  }
+                },
+                "executeButtonText": "Execute",
+                "noRecordExecution": true,
+                "singleRecordExecution": false
+              },
+              "status": null,
+              "top": "20",
+              "left": "20",
+              "stepType": "/api/3/workflow_step_types/f414d039-bb0d-4e59-9c39-a8f1e880b18a",
+              "uuid": "1d26fc5f-f05e-4e59-a842-028440161dcb",
+              "id": 60741
+            }
+          ],
+          "routes": [
+            {
+              "@type": "WorkflowRoute",
+              "name": "Start -> Search Registered Domains",
+              "targetStep": "/api/3/workflow_steps/0ee68aad-fbd2-4e9b-bfb8-3dc1b5f9bf58",
+              "sourceStep": "/api/3/workflow_steps/1d26fc5f-f05e-4e59-a842-028440161dcb",
+              "label": null,
+              "isExecuted": false,
+              "uuid": "f3b27652-b6ed-439c-b4b6-94043ac08796"
+            }
+          ],
+          "priority": null,
+          "uuid": "678d0919-3ce5-475c-a3ef-ec62bf84c140",
+          "recordTags": [
+            "dnstwist"
+          ],
+          "id": 18315,
+          "createUser": "/api/3/appliances/57545210-2adc-472b-a24f-2df6ee8dfe63",
+          "createDate": 1651062387,
+          "modifyUser": "/api/3/people/3451141c-bac6-467c-8d72-85e0fab569ce",
+          "modifyDate": 1651063615,
+          "owners": [],
+          "isPrivate": false
+        }
+      ]
+    }
+  ],
+  "exported_tags": [
+    "dnstwist"
+  ]
+}
