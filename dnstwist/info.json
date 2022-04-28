@@ -2,21 +2,21 @@
   "name": "dnstwist",
   "version": "1.0.0",
   "label": "DNSTwist",
-  "description": "Domain name permutation engine for detecting homograph phishing attacks,typo squatting, fraud and brand impersonation.",
+  "description": "DNSTwist is a python script used for detecting phishing attacks, typo squatters, and attack domains. ",
   "publisher": "Community",
   "icon_small_name": "small.png",
   "icon_large_name": "large.png",
   "cs_approved": false,
   "cs_compatible": true,
   "category": "Threat Intelligence",
-  "help_online": "",
+  "help_online": "https://docs.fortinet.com/document/fortisoar/1.0.0/dnstwist/264/dnstwist-v1-0-0",
   "configuration": {
   },
   "operations": [
     {
       "operation": "search",
       "title": "Search Registered Domains",
-      "description": "Show only registered domain names",
+      "description": "Displays registered domain names only based on the domain name you have specified.",
       "category": "investigation",
       "annotation": "search",
       "parameters": [
@@ -27,7 +27,7 @@
           "visible": true,
           "type": "text",
           "name": "domain",
-          "description": "Specify your domain."
+          "description": "Name of the domain based on which you want to search for registered domains using dnstwist. "
         }
       ],
       "enabled": true,
