@@ -1,15 +1,15 @@
 {
   "name": "dnstwist",
   "version": "1.0.0",
-  "label": "dnstwist",
-  "description": "Domain name permutation engine for detecting homograph phishing attacks,typosquatting, fraud and brand impersonation.",
+  "label": "DNSTwist",
+  "description": "Domain name permutation engine for detecting homograph phishing attacks,typo squatting, fraud and brand impersonation.",
   "publisher": "Community",
-  "icon_small_name": "dnstwist_small.png",
-  "icon_large_name": "dnstwist_large.png",
+  "icon_small_name": "small.png",
+  "icon_large_name": "large.png",
   "cs_approved": false,
   "cs_compatible": true,
-  "category": "investigation",
-  "help_online": "https://github.com/elceef/dnstwist",
+  "category": "Threat Intelligence",
+  "help_online": "",
   "configuration": {
   },
   "operations": [
@@ -27,7 +27,7 @@
           "visible": true,
           "type": "text",
           "name": "domain",
-          "description": "Domain"
+          "description": "Specify your domain."
         }
       ],
       "enabled": true,
@@ -44,8 +44,5 @@
         }
       ]
     }
-  ],
-  "playbooks": [
-    {}
   ]
 }
